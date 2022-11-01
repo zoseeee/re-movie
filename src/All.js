@@ -7,7 +7,8 @@ const All = () => {
   const [movie, setMovie] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const [snum, setSnum] = useState(1);
+  const [snum, setSnum] = useState(900);
+
   const allMovie = async () => {
     const res = await axios.get(
       `https://yts.mx/api/v2/list_movies.json?page=${page}&limit=50`
@@ -20,15 +21,23 @@ const All = () => {
     allMovie();
   }, [page]);
 
+  const cnum = 20;
+  const pnum = 50;
+
   const listNum = Array.from({ length: total / 50 });
-  const cNum = 10;
   return (
     <>
-    <button onClick={() => setSnum(snum - cNum)}>PREV</button>
+      {
+        //
+        snum === 1 ? null : (
+          <button onClick={() => setSnum(snum - cnum)}>PREV</button>
+        )
+      }
+
       <ul>
         {
           //
-          listNum.slice(snum, snum + cNum).map((it, idx) => (
+          listNum.slice(snum, snum + cnum).map((it, idx) => (
             <button
               onClick={() => {
                 setPage(idx + snum);
@@ -39,7 +48,12 @@ const All = () => {
           ))
         }
       </ul>
-      <button onClick={() => setSnum(snum + cNum)}>NEXT</button>
+      {
+        //
+        snum > total / pnum - cnum ? null : (
+          <button onClick={() => setSnum(snum + cnum)}>NEXT</button>
+        )
+      }
       <div>
         {
           //

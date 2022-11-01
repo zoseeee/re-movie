@@ -9,6 +9,9 @@ const Main = ({ limit }) => {
   //데이터 가져오기
   const [movie, getMovie] = useState([]);
   const [load, setLoad] = useState(true);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  
+
   const MS = useRef(null);
   const movieData = async () => {
     const movie = await axios.get(
@@ -20,6 +23,13 @@ const Main = ({ limit }) => {
   useEffect(() => {
     movieData();
   }, []);
+
+  const selectVideo = (movie) => {
+    setSelectedMovie(movie);
+    console.log(movie.id);
+  };
+
+
   return (
     <section className="Main">
       {load ? (
@@ -36,7 +46,7 @@ const Main = ({ limit }) => {
         >
           {movie.map((it) => {
             return (
-              <div key={it.id} className="item">
+              <div key={it.id} className="item" onClick={selectVideo}>
                 <figure>
                   <img src={it.large_cover_image} alt={it.title} />
                 </figure>
